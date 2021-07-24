@@ -23,6 +23,54 @@ namespace FizzBuzzMVC.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult FBPage()
+        {
+            FizzBuzz model = new();
+
+            model.FizzValue = 3;
+            model.BuzzValue = 5;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult FBPage(FizzBuzz fizzBuzz)
+        {
+            List<string> fbItems = new();
+
+            bool fizz;
+            bool buzz;
+
+            for (int i = 1; i <= 100; i++)
+            {
+                fizz = (i % fizzBuzz.FizzValue == 0);
+                buzz = (i % fizzBuzz.BuzzValue == 0);
+
+                if (fizz == true && buzz == true)
+                {
+                    fbItems.Add("FizzBuzz");
+                }
+                else if (buzz == true)
+                {
+                    fbItems.Add("Buzz");
+                }
+                else if (fizz == true)
+                {
+                    fbItems.Add("Fizz");
+                }
+                else
+                {
+                    fbItems.Add(i.ToString());
+                }
+            }
+
+            fizzBuzz.Result = fbItems;
+
+            return View(fizzBuzz);
+        }
+
         public IActionResult Privacy()
         {
             return View();
